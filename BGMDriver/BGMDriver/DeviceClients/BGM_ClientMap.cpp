@@ -413,6 +413,52 @@ bool BGM_ClientMap::SetClientsPanPosition(CACFString searchKey, SInt32 inPanPosi
     return didChangePanPosition;
 }
 
+void    BGM_ClientMap::SetPastClientRelativeVolume(CACFString inAppBundleID, Float32 inRelativeVolume)
+{
+    if(!inAppBundleID.IsValid())
+    {
+        return;
+    }
+    
+    CAMutex::Locker theShadowMapsLocker(mShadowMapsMutex);
+    
+    auto thePastClientItr = mPastClientMap.find(inAppBundleID);
+    if(thePastClientItr != mPastClientMap.end())
+    {
+        thePastClientItr->second.mRelativeVolume = inRelativeVolume;
+    }
+    else
+    {
+        BGM_Client thePastClient;
+        thePastClient.mBundleID = inAppBundleID;
+        thePastClient.mRelativeVolume = inRelativeVolume;
+        mPastClientMap[inAppBundleID] = thePastClient;
+    }
+}
+
+void    BGM_ClientMap::SetPastClientPanPosition(CACFString inAppBundleID, SInt32 inPanPosition)
+{
+    if(!inAppBundleID.IsValid())
+    {
+        return;
+    }
+    
+    CAMutex::Locker theShadowMapsLocker(mShadowMapsMutex);
+    
+    auto thePastClientItr = mPastClientMap.find(inAppBundleID);
+    if(thePastClientItr != mPastClientMap.end())
+    {
+        thePastClientItr->second.mPanPosition = inPanPosition;
+    }
+    else
+    {
+        BGM_Client thePastClient;
+        thePastClient.mBundleID = inAppBundleID;
+        thePastClient.mPanPosition = inPanPosition;
+        mPastClientMap[inAppBundleID] = thePastClient;
+    }
+}
+
 void    BGM_ClientMap::UpdateClientIOStateNonRT(UInt32 inClientID, bool inDoingIO)
 {
     CAMutex::Locker theShadowMapsLocker(mShadowMapsMutex);

@@ -126,6 +126,7 @@ private:
 public:
     OSStatus            Stop();
     void                StopIfIdle();
+    void                SuppressStopIfIdleForSeconds(Float64 inSeconds);
     
 private:
     
@@ -211,6 +212,7 @@ private:
     bool                mPlayingThrough = false;
 
     UInt64              mLastNotifiedIOStoppedOnBGMDevice { 0 };
+    UInt64              mSuppressStopIfIdleUntil { 0 };
 
     std::atomic<IOState>    mInputDeviceIOProcState { IOState::Stopped };
     std::atomic<IOState>    mOutputDeviceIOProcState { IOState::Stopped };

@@ -349,18 +349,25 @@ bool    BGM_Clients::SetClientsRelativeVolumes(const CACFArray inAppVolumes)
 
                 // Try to update the client's volume, first by PID and then by bundle ID. Always try
                 // both because apps can have multiple clients.
+                bool didChangeVolumeForLiveClient = false;
                 if(mClientMap.SetClientsRelativeVolume(theAppPID, theRelativeVolume))
                 {
-                    didChangeAppVolumes = true;
+                    didChangeVolumeForLiveClient = true;
                 }
 
                 if(mClientMap.SetClientsRelativeVolume(theAppBundleID, theRelativeVolume))
                 {
-                    didChangeAppVolumes = true;
+                    didChangeVolumeForLiveClient = true;
                 }
 
-                // TODO: If the app isn't currently a client, we should add it to the past clients
-                //       map, or update its past volume if it's already in there.
+                if(didChangeVolumeForLiveClient)
+                {
+                    didChangeAppVolumes = true;
+                }
+                else if(theAppBundleID.IsValid())
+                {
+                    mClientMap.SetPastClientRelativeVolume(theAppBundleID, theRelativeVolume);
+                }
             }
         }
         
@@ -369,18 +376,25 @@ bool    BGM_Clients::SetClientsRelativeVolumes(const CACFArray inAppVolumes)
             SInt32 thePanPosition;
             didGetPanPosition = theAppVolume.GetSInt32(CFSTR(kBGMAppVolumesKey_PanPosition), thePanPosition);
             if (didGetPanPosition) {
+                bool didChangePanForLiveClient = false;
                 if(mClientMap.SetClientsPanPosition(theAppPID, thePanPosition))
                 {
-                    didChangeAppVolumes = true;
+                    didChangePanForLiveClient = true;
                 }
 
                 if(mClientMap.SetClientsPanPosition(theAppBundleID, thePanPosition))
                 {
-                    didChangeAppVolumes = true;
+                    didChangePanForLiveClient = true;
                 }
 
-                // TODO: If the app isn't currently a client, we should add it to the past clients
-                //       map, or update its past pan position if it's already in there.
+                if(didChangePanForLiveClient)
+                {
+                    didChangeAppVolumes = true;
+                }
+                else if(theAppBundleID.IsValid())
+                {
+                    mClientMap.SetPastClientPanPosition(theAppBundleID, thePanPosition);
+                }
             }
         }
         
