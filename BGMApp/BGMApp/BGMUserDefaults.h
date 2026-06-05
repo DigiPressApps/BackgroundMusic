@@ -65,6 +65,15 @@
 @property NSUInteger pauseDelayMS;
 @property NSUInteger maxUnpauseDelayMS;
 
+// Per-app volume/pan settings keyed by bundle ID. Persisted across BGMApp and system restarts.
+// Pass INT_MIN for volume or pan to leave that field unchanged when updating an entry.
+- (BOOL) savedAppVolume:(SInt32*)outVolume
+                    pan:(SInt32*)outPan
+           forBundleID:(NSString* __nullable)bundleID;
+- (void) setSavedAppVolume:(SInt32)volume
+                       pan:(SInt32)pan
+              forBundleID:(NSString* __nullable)bundleID;
+
 @end
 
 #pragma clang assume_nonnull end

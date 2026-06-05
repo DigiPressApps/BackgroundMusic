@@ -101,6 +101,9 @@ static const int kBGMErrorCode_ReturningEarly       = 2;
 // code received from the HAL.
 - (OSStatus) startPlayThroughSync:(BOOL)forUISoundsDevice;
 
+// Prevents StopIfIdle from stopping playthrough briefly after launch while the audio stack settles.
+- (void) suppressStopIfIdleForLaunchGracePeriod;
+
 // When the output device is changed, BGMAudioDeviceManager will send the ID of the new output
 // device to BGMXPCHelper through this connection.
 - (void) setBGMXPCHelperConnection:(NSXPCConnection* __nullable)connection;

@@ -140,6 +140,11 @@ public:
     // inAppBundleID may contain a null CFStringRef, in which case it returns false.
     bool                                                SetClientsPanPosition(CACFString inAppBundleID, SInt32 inPanPosition);
     
+    // Stores volume/pan for bundle IDs that are not currently HAL clients so AddClient can apply
+    // them when the app starts playing audio.
+    void                                                SetPastClientRelativeVolume(CACFString inAppBundleID, Float32 inRelativeVolume);
+    void                                                SetPastClientPanPosition(CACFString inAppBundleID, SInt32 inPanPosition);
+    
     void                                                StartIONonRT(UInt32 inClientID) { UpdateClientIOStateNonRT(inClientID, true); }
     void                                                StopIONonRT(UInt32 inClientID) { UpdateClientIOStateNonRT(inClientID, false); }
     

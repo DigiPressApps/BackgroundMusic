@@ -750,6 +750,18 @@ OSStatus    BGMPlayThrough::Stop()
     return noErr; // TODO: Why does this return anything and why always noErr?
 }
 
+void    BGMPlayThrough::SuppressStopIfIdleForSeconds(Float64 inSeconds)
+{
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+
+    UInt64 nanos = static_cast<UInt64>(inSeconds * static_cast<Float64>(NSEC_PER_SEC));
+    UInt64 ticks = nanos * info.denom / info.numer;
+
+    CAMutex::Locker stateLocker(mStateMutex);
+    mSuppressStopIfIdleUntil = mach_absolute_time() + ticks;
+}
+
 void    BGMPlayThrough::StopIfIdle()
 {
     // To save CPU time, we stop playthrough when no clients are doing IO. This should reduce the coreaudiod and BGMApp
@@ -757,6 +769,14 @@ void    BGMPlayThrough::StopIfIdle()
     // being audible. VLC does that when you have a file paused, for example.
     
     CAMutex::Locker stateLocker(mStateMutex);
+
+    if(mach_absolute_time() < mSuppressStopIfIdleUntil)
+    {
+#if DEBUG
+        DebugMsg("BGMPlayThrough::StopIfIdle: Suppressed during launch grace period");
+#endif
+        return;
+    }
     
     BGMAssert(mInputDevice.IsBGMDeviceInstance(),
               "BGMDevice not set as input device. StopIfIdle can't tell if other devices are idle.");

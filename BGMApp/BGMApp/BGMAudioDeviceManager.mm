@@ -435,6 +435,12 @@
     return err;
 }
 
+- (void) suppressStopIfIdleForLaunchGracePeriod {
+    static const Float64 kLaunchGracePeriodSec = 15.0;
+    playThrough.SuppressStopIfIdleForSeconds(kLaunchGracePeriodSec);
+    playThrough_UISounds.SuppressStopIfIdleForSeconds(kLaunchGracePeriodSec);
+}
+
 #pragma mark BGMXPCHelper Communication
 
 - (void) setBGMXPCHelperConnection:(NSXPCConnection* __nullable)connection {
