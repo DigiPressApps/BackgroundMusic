@@ -47,7 +47,7 @@ After a Mac restart, menu sliders could show saved values but audio played at de
 
 ---
 
-## 手順（DigiPressApps/BackgroundMusic）
+## 手順（DPA / DigiPressApps/BackgroundMusic）
 
 ### 1. ブランチを push 済みであること
 

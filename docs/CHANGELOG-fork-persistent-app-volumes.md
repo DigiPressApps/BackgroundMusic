@@ -1,6 +1,6 @@
 # Fork 変更ログ: アプリ別音量の永続化と再起動後の復元
 
-このドキュメントは、[kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic) をベースにした Fork（[DigiPressApps/BackgroundMusic](https://github.com/DigiPressApps/BackgroundMusic)）に対し、**アプリ別音量を bundle ID で永続化し、Mac 再起動後も実音量に反映する**一連の変更を記録したものです。
+このドキュメントは、[kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic) をベースにした **DPA 版 Fork**（GitHub: [DigiPressApps/BackgroundMusic](https://github.com/DigiPressApps/BackgroundMusic)。**DPA** = DigiPressApps の略）に対し、**アプリ別音量を bundle ID で永続化し、Mac 再起動後も実音量に反映する**一連の変更を記録したものです。
 
 公式 Background Music には、スライダー値の再起動後復元（UserDefaults 等）および「HAL クライアント登録前の SetAppVolume を past client map に残す」処理は未実装でした（ドライバ `BGM_Clients.cpp` に TODO が残存）。
 
@@ -133,7 +133,7 @@ Debug ログ: メニューバーアイコン Option+クリックで Debug Loggin
 ## 参照
 
 - 上流: https://github.com/kyleneideck/BackgroundMusic
-- Fork: https://github.com/DigiPressApps/BackgroundMusic
+- DPA Fork: https://github.com/DigiPressApps/BackgroundMusic
 - 関連 issue（永続化）: 上流で長年要望あり（本 Fork では独自実装）
 
 ---
