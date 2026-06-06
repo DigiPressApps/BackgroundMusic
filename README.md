@@ -2,11 +2,18 @@
 
 ![](Images/README/FermataIcon.png)
 
-# Background Music
-##### macOS audio utility
+# Background Music — DigiPress Fork
+##### macOS audio utility · based on [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic)
 
 <img src="Images/README/Screenshot.png" width="340" height="443" />
 
+**English:** This repository is a maintained fork of [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic). It adds **persistent per-app volumes**, **automatic volume restore after reboot**, and improved routing for browser media helpers. Signed `.pkg` installers are published under [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest).
+
+**日本語:** [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic) をベースにした **DigiPress 版 Fork** です。**アプリ別音量の永続化**、**再起動後の音量復元**、ブラウザのメディアヘルパー向けルーティングなどを追加しています。署名・公証済み `.pkg` は [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest) から入手できます（ターミナル不要）。
+
+##### *Note: Background Music is still in alpha. This fork is not distributed on the Mac App Store.*
+
+[What's different](#whats-different-in-this-fork)<br/>
 [Overview](#overview)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Auto-pause music](#auto-pause-music)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Application volume](#application-volume)<br/>
@@ -16,8 +23,27 @@
 [Build and Install](#installing-from-source-code)</br>
 [Uninstall](#uninstall)<br/>
 [Troubleshooting](#troubleshooting)<br/>
+[Upstream project](#upstream-project)<br/>
 [Related Projects](#related-projects)<br/>
 [License](#license)<br/>
+
+# What's different in this fork
+
+Compared to the upstream 0.4.3 release, this fork adds:
+
++ **Persistent per-app volume and pan** — saved by bundle ID in UserDefaults and restored after quitting BGMApp or restarting your Mac
++ **Automatic volume restore when playback starts** — reapplies saved levels when other apps begin audio I/O (e.g. Finder Quick Look previews)
++ **Driver past-client volume map** — volumes set before a HAL client registers are applied when the app starts playing
++ **Safari / Chrome / Whale media helper routing** — per-app sliders reach helper processes that upstream could not control on recent macOS versions
+
+**日本語での要約**
+
++ **アプリ別音量・パンの永続化** — 再起動後も保存値を復元
++ **再生開始時の音量復元** — Finder プレビュー等で IO 開始時に再適用
++ **ドライバ past-client map** — HAL クライアント登録前の音量も後から反映
++ **Safari / Chrome 等のメディアヘルパー対応**
+
+See [docs/CHANGELOG-fork-persistent-app-volumes.md](docs/CHANGELOG-fork-persistent-app-volumes.md) for details (Japanese).
 
 # Overview
 
@@ -25,8 +51,6 @@
 + Per-application volume control
 + Record system audio
 + No restart required to install
-
-##### *Note: Background Music is still in alpha.*
 
 ## Auto-pause music
 
@@ -44,12 +68,14 @@ The auto-pause feature currently supports following music players:
 + [GPMDP](https://www.googleplaymusicdesktopplayer.com/)
 
 Adding support for a new music player is usually straightforward.<sup id="a1">[1](#f1)</sup> If you don't know how to program, or just don't feel
-like it, feel free to [create an issue](https://github.com/kyleneideck/BackgroundMusic/issues/new). Otherwise, see
+like it, feel free to [create an issue](https://github.com/DigiPressApps/BackgroundMusic/issues/new). Otherwise, see
 [BGMMusicPlayer.h](BGMApp/BGMApp/Music%20Players/BGMMusicPlayer.h).
 
 ## Application volume
 
 **Background Music** provides a volume slider for each application running your system. You can boost quiet applications above their maximum volume.
+
+**In this fork**, volume and pan settings are **saved automatically** and **restored after restart** when each app starts playing audio again. See [CHANGELOG](docs/CHANGELOG-fork-persistent-app-volumes.md) for details.
 
 ## Recording system audio
 
@@ -64,29 +90,34 @@ the **Background Music** device. You can create the aggregate device using the *
 
 **Requires macOS 10.13+**.
 
-You can download the current version of **Background Music** using the following options. We also have [snapshot builds](https://github.com/kyleneideck/BackgroundMusic/releases).
+## DigiPress Fork (recommended / 推奨)
 
-### Option 1
+Download the latest **signed and notarized** installer from this repository:
 
-Download **version 0.4.3**:
+<a href="https://github.com/DigiPressApps/BackgroundMusic/releases/latest"><img
+src="Images/README/pkg-icon.png" width="32" height="32" align="absmiddle" />
+BackgroundMusic-*.pkg (latest release)</a>
+
+**English:** Download **BackgroundMusic-0.4.4-dp.1.pkg** (or newer) from [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest), double-click to install, then open **Background Music** from **Applications**. No Terminal required.
+
+**日本語:** [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest) から **BackgroundMusic-0.4.4-dp.1.pkg**（またはそれ以降）をダウンロードし、ダブルクリックでインストール。**アプリケーション** から **Background Music** を起動してください。
+
+> **Note / 注意:** If upgrading from the upstream **0.4.3** release, uninstall the previous version first. / 公式 **0.4.3** からの場合は、先にアンインストールしてから入れ直すことを推奨します。
+
+Current release checksum (v0.4.4-dp.1):
+
+> SHA256: `a1035e06cde801ba153d79216c579b60510517abc2c4cd7e1e3267bb98bef8d4`
+
+## Upstream (original project / 公式版)
+
+The original project by Kyle Neideck is still available separately:
+
++ [kyleneideck/BackgroundMusic releases](https://github.com/kyleneideck/BackgroundMusic/releases) — **version 0.4.3**
++ Homebrew (upstream cask): `brew install --cask background-music`
 
 <a href="https://github.com/kyleneideck/BackgroundMusic/releases/download/v0.4.3/BackgroundMusic-0.4.3.pkg"><img
 src="Images/README/pkg-icon.png" width="32" height="32" align="absmiddle" />
-BackgroundMusic-0.4.3.pkg</a> (771 KB)
-
-> <sub>MD5: 8c3bfe26c9cdf27365b9843f719ef188</sub><br/>
-> <sub>SHA256: c1c48a37c83af44ce50bee68879856c96b2f6c97360ce461b1c7d653515be7fd</sub><br/>
-> <sub>PGP:
-> [sig](https://github.com/kyleneideck/BackgroundMusic/releases/download/v0.4.3/BackgroundMusic-0.4.3.pkg.asc),
-> [key (0595DF814E41A6F69334C5E2CAA8D9B8E39EC18C)](https://bearisdriving.com/kyle-neideck.gpg)</sub>
-
-### Option 2
-
-Install using [Homebrew](https://brew.sh/) by running the following command in **Terminal**:
-
-```bash
-brew install --cask background-music
-```
+BackgroundMusic-0.4.3.pkg (upstream)</a>
 
 # Run / Configure
 
@@ -108,7 +139,7 @@ Add **Background Music** to `System Settings > General > Login Items`.
 2. Copy and paste the following command into **Terminal**:
 
 ```shell
-(set -eo pipefail; URL='https://github.com/kyleneideck/BackgroundMusic/archive/master.tar.gz'; \
+(set -eo pipefail; URL='https://github.com/DigiPressApps/BackgroundMusic/archive/master.tar.gz'; \
     cd $(mktemp -d); echo Downloading $URL to $(pwd); curl -qfL# $URL | gzcat - | tar x && \
     /bin/bash BackgroundMusic-master/build_and_install.sh -w && rm -rf BackgroundMusic-master)
 ```
@@ -122,7 +153,7 @@ include a checksum), and will ensure that a half-downloaded copy of `build_and_i
 
 ### Option 2
 
-1. Clone or [download](https://github.com/kyleneideck/BackgroundMusic/archive/master.zip) the project.
+1. Clone or [download](https://github.com/DigiPressApps/BackgroundMusic/archive/master.zip) this fork.
 2. If the project is in a zip, unzip it.
 3. Open **Terminal** and [change the directory](https://github.com/0nn0/terminal-mac-cheatsheet#core-commands) to the
    directory containing the project.
@@ -141,7 +172,7 @@ To uninstall **Background Music** from your system, follow these steps:
 2. To locate `uninstall.sh`, run: `cd /Applications/Background\ Music.app/Contents/Resources/`.
 3. Run: `bash uninstall.sh`.
 
-If you cannot locate `uninstall.sh`, you can [download the project](https://github.com/kyleneideck/BackgroundMusic/archive/master.zip) again.
+If you cannot locate `uninstall.sh`, you can [download this fork](https://github.com/DigiPressApps/BackgroundMusic/archive/master.zip) again.
 
 To manually uninstall, see [MANUAL_UNINSTALL.md](https://github.com/kyleneideck/BackgroundMusic/blob/master/MANUAL-UNINSTALL.md).
 
@@ -186,8 +217,13 @@ meeting volume.
 - **Some applications play notification sounds that are only just long enough to trigger an auto-pause.**
     - Increase the `kPauseDelayNSec` constant in [BGMAutoPauseMusic.mm](/BGMApp/BGMApp/BGMAutoPauseMusic.mm). It will increase your music's overlap time over other audio, so don't increase it too much. See [#5](https://github.com/kyleneideck/BackgroundMusic/issues/5) for details.
 
-Many other issues are listed in [TODO.md](/TODO.md) and in [GitHub
-Issues](https://github.com/kyleneideck/BackgroundMusic/issues).
+Many other issues are listed in [TODO.md](/TODO.md) and in [GitHub Issues](https://github.com/DigiPressApps/BackgroundMusic/issues).
+
+# Upstream project
+
+This fork is based on **[kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic)**. For the original documentation, issue tracker, and unsigned/snapshot builds, see the upstream repository.
+
+To report bugs specific to **this fork** (persistent volumes, signed releases, browser helper routing), please use [DigiPressApps/BackgroundMusic issues](https://github.com/DigiPressApps/BackgroundMusic/issues).
 
 # Related projects
 
@@ -221,7 +257,7 @@ Issues](https://github.com/kyleneideck/BackgroundMusic/issues).
 ## License
 
 Copyright © 2016-2024 [Background Music contributors](https://github.com/kyleneideck/BackgroundMusic/graphs/contributors).
-Licensed under [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html), or any later version.
+Additional changes in this fork © DigiPressApps. Licensed under [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html), or any later version.
 
 **Background Music** includes code from:
 
