@@ -2,14 +2,14 @@
 
 ![](Images/README/FermataIcon.png)
 
-# Background Music — DigiPress Fork
+# Background Music — DPA Fork
 ##### macOS audio utility · based on [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic)
 
 <img src="Images/README/Screenshot.png" width="340" height="443" />
 
-**English:** This repository is a maintained fork of [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic). It adds **persistent per-app volumes**, **automatic volume restore after reboot**, and improved routing for browser media helpers. Signed `.pkg` installers are published under [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest).
+**English:** This repository is the **DPA** fork of [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic). **DPA** stands for [DigiPressApps](https://github.com/DigiPressApps). It adds **persistent per-app volumes**, **automatic volume restore after reboot**, and improved routing for browser media helpers. Signed `.pkg` installers are published under [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest).
 
-**日本語:** [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic) をベースにした **DigiPress 版 Fork** です。**アプリ別音量の永続化**、**再起動後の音量復元**、ブラウザのメディアヘルパー向けルーティングなどを追加しています。署名・公証済み `.pkg` は [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest) から入手できます（ターミナル不要）。
+**日本語:** [kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic) をベースにした **DPA 版 Fork** です。**DPA** は [DigiPressApps](https://github.com/DigiPressApps) の略称です。**アプリ別音量の永続化**、**再起動後の音量復元**、ブラウザのメディアヘルパー向けルーティングなどを追加しています。署名・公証済み `.pkg` は [Releases](https://github.com/DigiPressApps/BackgroundMusic/releases/latest) から入手できます（ターミナル不要）。
 
 ##### *Note: Background Music is still in alpha. This fork is not distributed on the Mac App Store.*
 
@@ -90,7 +90,7 @@ the **Background Music** device. You can create the aggregate device using the *
 
 **Requires macOS 10.13+**.
 
-## DigiPress Fork (recommended / 推奨)
+## DPA Fork (recommended / 推奨)
 
 Download the latest **signed and notarized** installer from this repository:
 
@@ -223,7 +223,7 @@ Many other issues are listed in [TODO.md](/TODO.md) and in [GitHub Issues](https
 
 This fork is based on **[kyleneideck/BackgroundMusic](https://github.com/kyleneideck/BackgroundMusic)**. For the original documentation, issue tracker, and unsigned/snapshot builds, see the upstream repository.
 
-To report bugs specific to **this fork** (persistent volumes, signed releases, browser helper routing), please use [DigiPressApps/BackgroundMusic issues](https://github.com/DigiPressApps/BackgroundMusic/issues).
+To report bugs specific to **this DPA fork** (persistent volumes, signed releases, browser helper routing), please use [DPA Background Music issues](https://github.com/DigiPressApps/BackgroundMusic/issues).
 
 # Related projects
 
@@ -257,7 +257,7 @@ To report bugs specific to **this fork** (persistent volumes, signed releases, b
 ## License
 
 Copyright © 2016-2024 [Background Music contributors](https://github.com/kyleneideck/BackgroundMusic/graphs/contributors).
-Additional changes in this fork © DigiPressApps. Licensed under [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html), or any later version.
+Additional changes in this DPA fork © [DigiPressApps](https://github.com/DigiPressApps). Licensed under [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html), or any later version.
 
 **Background Music** includes code from:
 
