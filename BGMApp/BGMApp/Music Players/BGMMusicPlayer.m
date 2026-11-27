@@ -101,9 +101,13 @@
 
 - (NSImage* __nullable) icon {
     NSString* __nullable bundleID = self.bundleID;
-    NSString* __nullable bundlePath =
-        (!bundleID ? nil : [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:(NSString*)bundleID]);
-    
+    if (!bundleID) {
+        return nil;
+    }
+
+    NSURL* __nullable appURL =
+        [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:(NSString*)bundleID];
+    NSString* __nullable bundlePath = appURL.path;
     return (!bundlePath ? nil : [[NSWorkspace sharedWorkspace] iconForFile:(NSString*)bundlePath]);
 }
 
