@@ -36,6 +36,15 @@ static NSString* const kDefaultKeyPreferredDeviceUIDs   = @"PreferredDeviceUIDs"
 static NSString* const kDefaultKeyStatusBarIcon         = @"StatusBarIcon";
 static NSString* const kDefaultKeyPauseDelayMS          = @"PauseDelayMS";
 static NSString* const kDefaultKeyMaxUnpauseDelayMS     = @"MaxUnpauseDelayMS";
+static NSString* const kDefaultKeySavedAppVolumes       = @"SavedAppVolumes";
+static NSString* const kSavedAppVolumeRelativeVolumeKey = @"rvol";
+static NSString* const kSavedAppVolumePanPositionKey      = @"ppos";
+
+static const SInt32 kSavedAppVolumeUnset = INT_MIN;
+static const SInt32 kAppRelativeVolumeMinSavedValue = 0;
+static const SInt32 kAppRelativeVolumeMaxSavedValue = 100;
+static const SInt32 kAppPanLeftSavedValue = -100;
+static const SInt32 kAppPanRightSavedValue = 100;
 
 // Labels for Keychain Data
 static NSString* const kKeychainLabelGPMDPAuthCode =
@@ -232,6 +241,83 @@ static NSString* const kKeychainLabelGPMDPAuthCode =
         NSString* errMsg = (__bridge_transfer NSString*)SecCopyErrorMessageString(err, nil);
         NSLog(@"Failed to delete GPMDP auth code from keychain: %d, %@", err, errMsg);
     }
+}
+
+#pragma mark Saved App Volumes
+
+- (BOOL) savedAppVolume:(SInt32*)outVolume
+                    pan:(SInt32*)outPan
+           forBundleID:(NSString* __nullable)bundleID {
+    if (!bundleID.length) {
+        return NO;
+    }
+    NSString* const nonNullBundleID = BGMNN(bundleID);
+
+    NSDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* __nullable savedVolumes =
+        [self get:kDefaultKeySavedAppVolumes];
+    NSDictionary<NSString*, NSNumber*>* __nullable entry = savedVolumes[nonNullBundleID];
+    if (!entry) {
+        return NO;
+    }
+
+    NSNumber* __nullable volumeNumber = entry[kSavedAppVolumeRelativeVolumeKey];
+    NSNumber* __nullable panNumber = entry[kSavedAppVolumePanPositionKey];
+    if (!volumeNumber && !panNumber) {
+        return NO;
+    }
+
+    if (outVolume) {
+        *outVolume = volumeNumber ? volumeNumber.intValue : kSavedAppVolumeUnset;
+    }
+    if (outPan) {
+        *outPan = panNumber ? panNumber.intValue : kSavedAppVolumeUnset;
+    }
+
+    return YES;
+}
+
+- (void) setSavedAppVolume:(SInt32)volume
+                       pan:(SInt32)pan
+              forBundleID:(NSString* __nullable)bundleID {
+    if (!bundleID.length) {
+        return;
+    }
+    NSString* const nonNullBundleID = BGMNN(bundleID);
+
+    if (volume != kSavedAppVolumeUnset) {
+        volume = MAX(kAppRelativeVolumeMinSavedValue,
+                     MIN(kAppRelativeVolumeMaxSavedValue, volume));
+    }
+    if (pan != kSavedAppVolumeUnset) {
+        pan = MAX(kAppPanLeftSavedValue, MIN(kAppPanRightSavedValue, pan));
+    }
+
+    NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* savedVolumes =
+        [[self get:kDefaultKeySavedAppVolumes] mutableCopy];
+    if (!savedVolumes) {
+        savedVolumes = [NSMutableDictionary dictionary];
+    }
+
+    NSMutableDictionary<NSString*, NSNumber*>* entry =
+        [savedVolumes[nonNullBundleID] mutableCopy];
+    if (!entry) {
+        entry = [NSMutableDictionary dictionary];
+    }
+
+    if (volume != kSavedAppVolumeUnset) {
+        entry[kSavedAppVolumeRelativeVolumeKey] = @(volume);
+    }
+    if (pan != kSavedAppVolumeUnset) {
+        entry[kSavedAppVolumePanPositionKey] = @(pan);
+    }
+
+    if (entry.count == 0) {
+        [savedVolumes removeObjectForKey:nonNullBundleID];
+    } else {
+        savedVolumes[nonNullBundleID] = entry;
+    }
+
+    [self set:kDefaultKeySavedAppVolumes to:savedVolumes];
 }
 
 #pragma mark General Accessors

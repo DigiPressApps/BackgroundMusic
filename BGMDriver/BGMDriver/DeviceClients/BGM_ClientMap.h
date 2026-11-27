@@ -139,6 +139,11 @@ public:
     // Returns true if a client for bundle ID inAppBundleID was found and its pan position changed.
     // inAppBundleID may contain a null CFStringRef, in which case it returns false.
     bool                                                SetClientsPanPosition(CACFString inAppBundleID, SInt32 inPanPosition);
+
+    // Stores volume/pan for bundle IDs that are not currently HAL clients so AddClient can apply
+    // them when the app starts playing audio.
+    void                                                SetPastClientRelativeVolume(CACFString inAppBundleID, Float32 inRelativeVolume);
+    void                                                SetPastClientPanPosition(CACFString inAppBundleID, SInt32 inPanPosition);
     
     // Has a real-time thread call SwapInShadowMapsRT. (Synchronously queues the call as a task on mTaskQueue.)
     // The shadow maps mutex must be locked when calling this method.

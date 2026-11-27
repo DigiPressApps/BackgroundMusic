@@ -23,6 +23,7 @@
 
 // Local Includes
 #import "BGMAudioDeviceManager.h"
+#import "BGMUserDefaults.h"
 
 // System Includes
 #import <Cocoa/Cocoa.h>
@@ -39,7 +40,8 @@ typedef struct BGMAppVolumeAndPan {
 
 - (id) initWithMenu:(NSMenu*)menu
       appVolumeView:(NSView*)view
-       audioDevices:(BGMAudioDeviceManager*)audioDevices;
+       audioDevices:(BGMAudioDeviceManager*)audioDevices
+       userDefaults:(BGMUserDefaults*)userDefaults;
 
 // See BGMBackgroundMusicDevice::SetAppVolume.
 - (void)  setVolume:(SInt32)volume
